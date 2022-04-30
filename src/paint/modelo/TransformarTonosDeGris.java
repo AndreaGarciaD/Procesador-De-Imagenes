@@ -72,14 +72,6 @@ public class TransformarTonosDeGris extends Transformacion {
                 int a = (rgb >> 24) & 0x0000ff00;
                 int g = (rgb >> 8) & 0x000000ff00;
 
-                /*int promedio = (int) (((double) r + (double) g + (double) b) / 3.0);
-                int bicolor;
-                if (promedio < 127) {
-                    bicolor = promedio + promedio * 0 + promedio * 0; //blanco
-                } else {
-                    bicolor = promedio + promedio * 255 + promedio * 255; //negro
-                }
-                imagen.setColor(bicolor, i, j);*/
                 rgb = (a << 24) | (0 << 16) | (g << 8) | 0;
                 imagen.setColor(rgb, i, j);
                 //pixeles[i][j] = r | g | b;

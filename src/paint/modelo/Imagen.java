@@ -1,6 +1,6 @@
 package paint.modelo;
 
-import vista.PaintPanel;
+import paint.vista.PaintPanel;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

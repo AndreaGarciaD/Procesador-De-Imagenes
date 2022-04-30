@@ -1,4 +1,4 @@
-package vista;
+package paint.vista;
 
 import paint.modelo.Imagen;
 
