@@ -9,7 +9,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 public class PaintPanel extends JPanel implements PropertyChangeListener {
-    private final Imagen modelo;
+    private Imagen modelo;
 
     public PaintPanel(Imagen m) {
         modelo = m;

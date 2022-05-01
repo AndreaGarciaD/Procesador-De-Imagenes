@@ -5,6 +5,7 @@ import paint.modelo.Transformacion;
 import paint.modelo.TransformarTonosDeGris;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,7 +14,11 @@ public class PaintFrame extends JFrame {
     private Imagen modelo;
     private PaintPanel panel;
 
+    //JButton btnGris = new JButton("Blanco y negro");
+
     public PaintFrame() {
+        //btnGris.setBackground(Color.CYAN);
+        //btnGris.setBounds(10,500, 20,20);
         init();
     }
 
@@ -22,7 +27,7 @@ public class PaintFrame extends JFrame {
 
         this.getContentPane().setLayout(new BorderLayout());
 
-        modelo = new Imagen(400,400);
+        modelo = new Imagen(550,500);
         panel = new PaintPanel(modelo);
 
         this.getContentPane().add(panel, BorderLayout.CENTER);
@@ -37,7 +42,8 @@ public class PaintFrame extends JFrame {
 
         this.getContentPane().add(btnHacer, BorderLayout.SOUTH);
 
-        JButton btnGris = new JButton("Gris");
+        JButton btnGris = new JButton("Blanco y negro");
+        btnGris.setSize(20,20);
         btnGris.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -47,12 +53,27 @@ public class PaintFrame extends JFrame {
 
         this.getContentPane().add(btnGris, BorderLayout.EAST);
 
+        JButton btnRojo = new JButton("Rojo");
+        btnGris.setBounds(10, 500, 20,20);
+        btnRojo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                btnRojo_clicked();
+            }
+        });
+
+        //this.getContentPane().add(btnRojo, BorderLayout.EAST);
         this.pack();
     }
 
     private void btnGris_clicked() {
         Transformacion tonosDeGris = new TransformarTonosDeGris(modelo);
-        tonosDeGris.transformarAzul();
+        tonosDeGris.transformarBN();
+    }
+
+    private void btnRojo_clicked(){
+        Transformacion tonosRojo = new TransformarTonosDeGris(modelo);
+        tonosRojo.transformarRojo();
     }
 
     private void btnHacer_clicked() {
