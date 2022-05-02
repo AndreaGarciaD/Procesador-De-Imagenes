@@ -17,8 +17,9 @@ public class PaintFrame extends JFrame {
     //JButton btnGris = new JButton("Blanco y negro");
 
     public PaintFrame() {
-        //btnGris.setBackground(Color.CYAN);
-        //btnGris.setBounds(10,500, 20,20);
+        setSize(600, 600);
+        //setLocationRelativeTo(null);
+        setVisible(true);
         init();
     }
 
@@ -27,10 +28,10 @@ public class PaintFrame extends JFrame {
 
         this.getContentPane().setLayout(new BorderLayout());
 
-        modelo = new Imagen(550,500);
+        modelo = new Imagen(550, 500);
         panel = new PaintPanel(modelo);
 
-        this.getContentPane().add(panel, BorderLayout.CENTER);
+        this.getContentPane().add(panel);
 
         JButton btnHacer = new JButton("Hacer");
         btnHacer.addActionListener(new ActionListener() {
@@ -43,7 +44,7 @@ public class PaintFrame extends JFrame {
         this.getContentPane().add(btnHacer, BorderLayout.SOUTH);
 
         JButton btnGris = new JButton("Blanco y negro");
-        btnGris.setSize(20,20);
+        btnGris.setBounds(10, 500, 20, 20);
         btnGris.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -51,10 +52,10 @@ public class PaintFrame extends JFrame {
             }
         });
 
-        this.getContentPane().add(btnGris, BorderLayout.EAST);
+        panel.add(btnGris);
 
         JButton btnRojo = new JButton("Rojo");
-        btnGris.setBounds(10, 500, 20,20);
+        btnGris.setBounds(10, 500, 20, 20);
         btnRojo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -62,21 +63,21 @@ public class PaintFrame extends JFrame {
             }
         });
 
-        //this.getContentPane().add(btnRojo, BorderLayout.EAST);
+        //this.getContentPane().add(btnRojo, BorderLayout.EAST);*/
         this.pack();
     }
 
     private void btnGris_clicked() {
         Transformacion tonosDeGris = new TransformarTonosDeGris(modelo);
-        tonosDeGris.transformarBN();
+        tonosDeGris.transformarBlur();
     }
 
-    private void btnRojo_clicked(){
+    private void btnRojo_clicked() {
         Transformacion tonosRojo = new TransformarTonosDeGris(modelo);
         tonosRojo.transformarRojo();
     }
 
     private void btnHacer_clicked() {
-        modelo.leerDeArchivo("C:\\Pro III imagenes\\Saeyoung.jpg");
+        modelo.leerDeArchivo("C:\\Pro III imagenes\\Aves.jpg");
     }
 }

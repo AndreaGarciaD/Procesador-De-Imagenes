@@ -53,6 +53,7 @@ public class Imagen {
         return pixeles;
     }
 
+
     public void setPixeles(int[][] pixeles) {
         this.pixeles = pixeles;
     }

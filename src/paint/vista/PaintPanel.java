@@ -11,14 +11,15 @@ import java.beans.PropertyChangeListener;
 public class PaintPanel extends JPanel implements PropertyChangeListener {
     private Imagen modelo;
 
+
     public PaintPanel(Imagen m) {
         modelo = m;
         modelo.addObserver(this);
+
     }
 
     @Override
     public Dimension getPreferredSize() {
-
         return new Dimension(600, 600);
     }
 
