@@ -34,7 +34,7 @@ public class PaintPanel extends JPanel implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName() != "IMAGEN") {
+        if (evt.getPropertyName() != "CAMBIO") {
             return;
         }
         repaint();

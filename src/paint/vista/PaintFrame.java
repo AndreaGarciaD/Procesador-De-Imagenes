@@ -1,16 +1,19 @@
 package paint.vista;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import paint.modelo.Imagen;
 import paint.modelo.Transformacion;
-import paint.modelo.TransformarTonosDeGris;
+import paint.modelo.Filtros;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class PaintFrame extends JFrame implements ActionListener {
+
+    private Logger logger = LogManager.getRootLogger();
     private Imagen modelo;
     private PaintPanel panel;
 
@@ -22,7 +25,6 @@ public class PaintFrame extends JFrame implements ActionListener {
     private JButton btnHorizontal = new JButton("Horizontal");
     private JButton btnVertical = new JButton("Vertical");
     private JButton btnPixelar = new JButton("Pixelado");
-    private JButton btnBlur = new JButton("Blur");
     private JButton btnReset = new JButton("Reset");
     private JMenuItem cargarImagen = new JMenuItem("Cargar");
     private JMenuItem salir = new JMenuItem("Salir");
@@ -47,7 +49,6 @@ public class PaintFrame extends JFrame implements ActionListener {
         btnHorizontal.addActionListener(this);
         btnVertical.addActionListener(this);
         btnPixelar.addActionListener(this);
-        btnBlur.addActionListener(this);
         btnReset.addActionListener(this);
         init();
     }
@@ -82,8 +83,6 @@ public class PaintFrame extends JFrame implements ActionListener {
         y += 40;
         btnPixelar.setBounds(x, y, 120, 30);
         y += 40;
-        btnBlur.setBounds(x, y, 120, 30);
-        y += 40;
         btnReset.setBounds(x, y, 120, 30);
 
         panel_opciones.add(btnGris);
@@ -94,7 +93,6 @@ public class PaintFrame extends JFrame implements ActionListener {
         panel_opciones.add(btnHorizontal);
         panel_opciones.add(btnVertical);
         panel_opciones.add(btnPixelar);
-        panel_opciones.add(btnBlur);
         panel_opciones.add(btnReset);
 
         panel_opciones.setPreferredSize(new Dimension(140, 130));
@@ -105,7 +103,6 @@ public class PaintFrame extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == cargarImagen) {
-            btnHacer_clicked();
             btnHacer_clicked();
         }
         if (e.getSource() == btnGris) {
@@ -119,84 +116,79 @@ public class PaintFrame extends JFrame implements ActionListener {
             btnHacer_clicked();
             btnVerde_clicked();
         }
-        if(e.getSource() == btnAzul){
+        if (e.getSource() == btnAzul) {
             btnHacer_clicked();
             btnAzul_clicked();
         }
-        if(e.getSource() == btnBN){
+        if (e.getSource() == btnBN) {
             btnHacer_clicked();
             btnBN_clicked();
         }
-        if(e.getSource() == btnHorizontal){
+        if (e.getSource() == btnHorizontal) {
             btnHorizontal_clicked();
         }
-        if(e.getSource() == btnVertical){
+        if (e.getSource() == btnVertical) {
             btnVertical_clicked();
         }
-        if(e.getSource() == btnPixelar){
+        if (e.getSource() == btnPixelar) {
             btnPixelar_clicked();
         }
-        if(e.getSource() == btnBlur){
-            btnBlur_clicked();
-        }
-        if(e.getSource() == btnReset){
+        if (e.getSource() == btnReset) {
             btnReset_clicked();
         }
-
+        if (e.getSource() == salir) {
+            System.exit(0);
+        }
 
     }
 
     private void btnGris_clicked() {
-        Transformacion tonosDeGris = new TransformarTonosDeGris(modelo);
+        Transformacion tonosDeGris = new Filtros(modelo);
         tonosDeGris.transformarGris();
     }
 
     private void btnRojo_clicked() {
-        Transformacion tonosRojo = new TransformarTonosDeGris(modelo);
+        Transformacion tonosRojo = new Filtros(modelo);
         tonosRojo.transformarRojo();
     }
 
     private void btnVerde_clicked() {
-        Transformacion tonosVerde = new TransformarTonosDeGris(modelo);
+        Transformacion tonosVerde = new Filtros(modelo);
         tonosVerde.transformarVerde();
     }
 
     private void btnAzul_clicked() {
-        Transformacion tonosRojo = new TransformarTonosDeGris(modelo);
+        Transformacion tonosRojo = new Filtros(modelo);
         tonosRojo.transformarAzul();
     }
 
-    private  void btnBN_clicked(){
-        Transformacion tonosBN = new TransformarTonosDeGris(modelo);
+    private void btnBN_clicked() {
+        Transformacion tonosBN = new Filtros(modelo);
         tonosBN.transformarBN();
     }
 
-    private void btnHorizontal_clicked(){
-        Transformacion espejoHorizontal = new TransformarTonosDeGris(modelo);
+    private void btnHorizontal_clicked() {
+        Transformacion espejoHorizontal = new Filtros(modelo);
         espejoHorizontal.transformarEspejoHorizontal();
     }
 
-    private void btnVertical_clicked(){
-        Transformacion espejoVertical = new TransformarTonosDeGris(modelo);
+    private void btnVertical_clicked() {
+        Transformacion espejoVertical = new Filtros(modelo);
         espejoVertical.transformarEspejoVertical();
     }
 
-    private void btnPixelar_clicked(){
-        Transformacion pixelado = new TransformarTonosDeGris(modelo);
+    private void btnPixelar_clicked() {
+        Transformacion pixelado = new Filtros(modelo);
         pixelado.transformarPixelar();
     }
 
-    private void btnBlur_clicked (){
-        Transformacion borroso = new TransformarTonosDeGris(modelo);
-        borroso.transformarBlur();
-    }
-
-    private void btnReset_clicked(){
+    private void btnReset_clicked() {
         modelo.leerDeArchivo("C:\\Pro III imagenes\\MicrosoftTeams-image (2).png");
     }
 
 
     private void btnHacer_clicked() {
+        logger.debug("Cargando Imagen");
         modelo.leerDeArchivo("C:\\Pro III imagenes\\Saeyoung.jpg");
     }
 

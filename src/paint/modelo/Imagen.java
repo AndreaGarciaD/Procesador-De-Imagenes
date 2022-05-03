@@ -1,15 +1,18 @@
 package paint.modelo;
 
+import org.apache.logging.log4j.LogManager;
 import paint.vista.PaintPanel;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.IOException;
+import org.apache.logging.log4j.Logger;
 
 public class Imagen {
+
+    private Logger logger = LogManager.getRootLogger();
     private PropertyChangeSupport cambios;
     protected int[][] pixeles;
     protected int ancho;
@@ -31,7 +34,7 @@ public class Imagen {
                 pixeles[i][j] = bgr;
             }
         }
-        cambios.firePropertyChange("IMAGEN", 1, 0);
+        cambios.firePropertyChange("CAMBIO", 1, 0);
     }
 
     public void dibujar(Graphics2D g) {
@@ -45,10 +48,11 @@ public class Imagen {
     }
 
     protected void initImagen(int w, int h) {
+        logger.debug("Hola");
         pixeles = new int[w][h];
         ancho = w;
         alto = h;
-        cambios.firePropertyChange("IMAGEN", 1, 0);
+        cambios.firePropertyChange("CAMBIO", 1, 0);
     }
 
     public void leerDeArchivo(String path) {
@@ -68,7 +72,7 @@ public class Imagen {
     }
 
     public void transformada() {
-        cambios.firePropertyChange("IMAGEN", 1, 0);
+        cambios.firePropertyChange("CAMBIO", 1, 0);
     }
 
     public void setColor(int c, int i, int j){
