@@ -10,66 +10,145 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class PaintFrame extends JFrame {
+public class PaintFrame extends JFrame implements ActionListener {
     private Imagen modelo;
     private PaintPanel panel;
+
+    private JButton btnGris = new JButton("Gris");
+    private JButton btnRojo = new JButton("Rojo");
+    private JButton btnVerde = new JButton("Verde");
+    private JButton btnAzul = new JButton("Azul");
+    private JButton btnBN = new JButton("Blanco y negro");
+    private JButton btnHorizontal = new JButton("Horizontal");
+    private JButton btnVertical = new JButton("Vertical");
+    private JButton btnPixelar = new JButton("Pixelado");
+    private JButton btnBlur = new JButton("Blur");
+    private JButton btnReset = new JButton("Reset");
+    private JMenuItem cargarImagen = new JMenuItem("Cargar");
+    private JMenuItem salir = new JMenuItem("Salir");
+
+    private int x = 10;
+    private int y = 20;
+
+    private JPanel panel_opciones = new JPanel();
 
     //JButton btnGris = new JButton("Blanco y negro");
 
     public PaintFrame() {
-        setSize(600, 600);
-        //setLocationRelativeTo(null);
+        setSize(700, 620);
+        setLocationRelativeTo(null);
         setVisible(true);
+        cargarImagen.addActionListener(this);
+        btnGris.addActionListener(this);
+        btnRojo.addActionListener(this);
+        btnAzul.addActionListener(this);
+        btnVerde.addActionListener(this);
+        btnBN.addActionListener(this);
+        btnHorizontal.addActionListener(this);
+        btnVertical.addActionListener(this);
+        btnPixelar.addActionListener(this);
+        btnBlur.addActionListener(this);
+        btnReset.addActionListener(this);
         init();
     }
 
     public void init() {
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-
-        this.getContentPane().setLayout(new BorderLayout());
-
-        modelo = new Imagen(550, 500);
+        modelo = new Imagen(550, 550);
         panel = new PaintPanel(modelo);
+        this.add(panel);
 
-        this.getContentPane().add(panel);
+        JMenuBar menu = new JMenuBar();
+        JMenu archivo = new JMenu("Archivo");
+        archivo.add(cargarImagen);
+        archivo.add(salir);
+        menu.add(archivo);
+        this.setJMenuBar(menu);
 
-        JButton btnHacer = new JButton("Hacer");
-        btnHacer.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                btnHacer_clicked();
-            }
-        });
+        panel_opciones.setLayout(null);
 
-        this.getContentPane().add(btnHacer, BorderLayout.SOUTH);
+        btnGris.setBounds(x, y, 120, 30);
+        y += 40;
+        btnRojo.setBounds(x, y, 120, 30);
+        y += 40;
+        btnVerde.setBounds(x, y, 120, 30);
+        y += 40;
+        btnAzul.setBounds(x, y, 120, 30);
+        y += 40;
+        btnBN.setBounds(x, y, 120, 30);
+        y += 40;
+        btnHorizontal.setBounds(x, y, 120, 30);
+        y += 40;
+        btnVertical.setBounds(x, y, 120, 30);
+        y += 40;
+        btnPixelar.setBounds(x, y, 120, 30);
+        y += 40;
+        btnBlur.setBounds(x, y, 120, 30);
+        y += 40;
+        btnReset.setBounds(x, y, 120, 30);
 
-        JButton btnGris = new JButton("Blanco y negro");
-        btnGris.setBounds(10, 500, 20, 20);
-        btnGris.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                btnGris_clicked();
-            }
-        });
+        panel_opciones.add(btnGris);
+        panel_opciones.add(btnRojo);
+        panel_opciones.add(btnVerde);
+        panel_opciones.add(btnAzul);
+        panel_opciones.add(btnBN);
+        panel_opciones.add(btnHorizontal);
+        panel_opciones.add(btnVertical);
+        panel_opciones.add(btnPixelar);
+        panel_opciones.add(btnBlur);
+        panel_opciones.add(btnReset);
 
-        panel.add(btnGris);
+        panel_opciones.setPreferredSize(new Dimension(140, 130));
+        this.add(panel_opciones, BorderLayout.EAST);
 
-        JButton btnRojo = new JButton("Rojo");
-        btnGris.setBounds(10, 500, 20, 20);
-        btnRojo.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                btnRojo_clicked();
-            }
-        });
+    }
 
-        //this.getContentPane().add(btnRojo, BorderLayout.EAST);*/
-        this.pack();
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == cargarImagen) {
+            btnHacer_clicked();
+            btnHacer_clicked();
+        }
+        if (e.getSource() == btnGris) {
+            btnGris_clicked();
+        }
+        if (e.getSource() == btnRojo) {
+            btnHacer_clicked();
+            btnRojo_clicked();
+        }
+        if (e.getSource() == btnVerde) {
+            btnHacer_clicked();
+            btnVerde_clicked();
+        }
+        if(e.getSource() == btnAzul){
+            btnHacer_clicked();
+            btnAzul_clicked();
+        }
+        if(e.getSource() == btnBN){
+            btnHacer_clicked();
+            btnBN_clicked();
+        }
+        if(e.getSource() == btnHorizontal){
+            btnHorizontal_clicked();
+        }
+        if(e.getSource() == btnVertical){
+            btnVertical_clicked();
+        }
+        if(e.getSource() == btnPixelar){
+            btnPixelar_clicked();
+        }
+        if(e.getSource() == btnBlur){
+            btnBlur_clicked();
+        }
+        if(e.getSource() == btnReset){
+            btnReset_clicked();
+        }
+
+
     }
 
     private void btnGris_clicked() {
         Transformacion tonosDeGris = new TransformarTonosDeGris(modelo);
-        tonosDeGris.transformarBlur();
+        tonosDeGris.transformarGris();
     }
 
     private void btnRojo_clicked() {
@@ -77,7 +156,49 @@ public class PaintFrame extends JFrame {
         tonosRojo.transformarRojo();
     }
 
-    private void btnHacer_clicked() {
-        modelo.leerDeArchivo("C:\\Pro III imagenes\\Aves.jpg");
+    private void btnVerde_clicked() {
+        Transformacion tonosVerde = new TransformarTonosDeGris(modelo);
+        tonosVerde.transformarVerde();
     }
+
+    private void btnAzul_clicked() {
+        Transformacion tonosRojo = new TransformarTonosDeGris(modelo);
+        tonosRojo.transformarAzul();
+    }
+
+    private  void btnBN_clicked(){
+        Transformacion tonosBN = new TransformarTonosDeGris(modelo);
+        tonosBN.transformarBN();
+    }
+
+    private void btnHorizontal_clicked(){
+        Transformacion espejoHorizontal = new TransformarTonosDeGris(modelo);
+        espejoHorizontal.transformarEspejoHorizontal();
+    }
+
+    private void btnVertical_clicked(){
+        Transformacion espejoVertical = new TransformarTonosDeGris(modelo);
+        espejoVertical.transformarEspejoVertical();
+    }
+
+    private void btnPixelar_clicked(){
+        Transformacion pixelado = new TransformarTonosDeGris(modelo);
+        pixelado.transformarPixelar();
+    }
+
+    private void btnBlur_clicked (){
+        Transformacion borroso = new TransformarTonosDeGris(modelo);
+        borroso.transformarBlur();
+    }
+
+    private void btnReset_clicked(){
+        modelo.leerDeArchivo("C:\\Pro III imagenes\\MicrosoftTeams-image (2).png");
+    }
+
+
+    private void btnHacer_clicked() {
+        modelo.leerDeArchivo("C:\\Pro III imagenes\\Saeyoung.jpg");
+    }
+
+
 }

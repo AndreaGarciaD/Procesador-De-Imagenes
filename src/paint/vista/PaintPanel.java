@@ -1,5 +1,6 @@
 package paint.vista;
 
+import paint.modelo.Cuadrado;
 import paint.modelo.Imagen;
 
 import javax.swing.*;
@@ -11,16 +12,9 @@ import java.beans.PropertyChangeListener;
 public class PaintPanel extends JPanel implements PropertyChangeListener {
     private Imagen modelo;
 
-
     public PaintPanel(Imagen m) {
         modelo = m;
         modelo.addObserver(this);
-
-    }
-
-    @Override
-    public Dimension getPreferredSize() {
-        return new Dimension(600, 600);
     }
 
     @Override
@@ -35,8 +29,7 @@ public class PaintPanel extends JPanel implements PropertyChangeListener {
         Graphics2D g2d = rsm.createGraphics();
 
         modelo.dibujar(g2d);
-        g.drawImage(rsm, 0, 0, null);
-
+        g.drawImage(rsm, 10, 0, null);
     }
 
     @Override

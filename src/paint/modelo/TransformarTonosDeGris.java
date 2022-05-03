@@ -1,16 +1,9 @@
 package paint.modelo;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-
 public class TransformarTonosDeGris extends Transformacion {
 
     public TransformarTonosDeGris(Imagen img) {
         this.imagen = img;
-    }
-
-    public TransformarTonosDeGris(BufferedImage bi) {
-        this.biImagen = bi;
     }
 
     @Override
@@ -42,7 +35,7 @@ public class TransformarTonosDeGris extends Transformacion {
                 int g = (rgb >> 8) & 0x000000ff;
                 int b = rgb & 0x000000ff;
                 int promedio = (int) (((double) r + (double) g + (double) b) / 3.0);
-                if (promedio < 100) {
+                if (promedio < 50) {
                     rgb = 0x00000000;
                 } else {
                     rgb = 0xffffffff;
@@ -93,8 +86,10 @@ public class TransformarTonosDeGris extends Transformacion {
 
                 int a = (rgb >> 24) & 0xff;
                 int r = (rgb >> 16) & 0xff;
+                //int b = (rgb) & 0xff;
 
                 rgb = (a << 24) | (0) | r << 16;
+                //rgb = (r<<16);
                 imagen.setColor(rgb, i, j);
             }
         }
@@ -140,17 +135,35 @@ public class TransformarTonosDeGris extends Transformacion {
     }
 
     public void transformarPixelar() {
-        int fila = 0;
-        int columna = 0;
-        int limite = 166;
         int[][] pixeles = imagen.getPixeles();
-        for (int i = 0; i < imagen.getAncho(); i = i + 3) {
-            for (int j = 0; j < imagen.getAlto(); j = j+3) {
-                pixeles[i][j] = pixeles[fila][columna];
-
+        for (int fila = 0; fila < imagen.getAncho() - 2; fila += 3) {
+            for (int columna = 0; columna < imagen.getAlto() - 2; columna +=3) {
+                int pos1 = pixeles[fila][columna];
+                imagen.setColor(pos1, fila, columna);
+                imagen.setColor(pos1, fila, columna + 1);
+                 imagen.setColor(pos1, fila, columna + 2);
+                imagen.setColor(pos1, fila + 1, columna);
+                imagen.setColor(pos1, fila + 1, columna + 1);
+                 imagen.setColor(pos1, fila + 1, columna + 2);
             }
         }
         imagen.transformada();
+    }
+        /*int fila = 0;
+        int columna = 0;
+        int[][] pixeles = imagen.getPixeles();
+        do {
+            fila += 3;
+            columna += 3;
+            for (int i = fila; i < fila + 5; i++) {
+                for (int j = columna; j < columna + 5; j++) {
+                    pixeles[i][j] = pixeles[columna][fila];
+
+                }
+            }
+        } while (fila <= imagen.getAncho() - 10 || columna <= imagen.getAlto() - 10);
+
+        imagen.transformada();*/
         /*int filaRegion = 0;
         int columnaRegion = 0;
         do {
@@ -164,7 +177,7 @@ public class TransformarTonosDeGris extends Transformacion {
             columnaRegion += 3;
         } while (filaRegion < imagen.getAncho() - 1 && columnaRegion < imagen.getAlto() - 1);*/
 
-    }
+
 
     /*
     Obtener los pixeles de una Buffered image
@@ -177,7 +190,7 @@ public class TransformarTonosDeGris extends Transformacion {
         int b = rgb & 0xff;
 
         a= 255;
-        r= 100;
+        r= 100 -10;
         g = 150;
         b = 200;
 
@@ -185,44 +198,90 @@ public class TransformarTonosDeGris extends Transformacion {
         imagen.setColor(rgb, 0, 0);
         imagen.transformada();*/
 
-    public void transformarBlur(){
-        int [][] pixeles = imagen.getPixeles();
-        Color color[];
-        int i = 0;
-        int max = 400, rad = 10;
-        int a1 = 0, r1 = 0, g1 = 0, b1 = 0;
-        color = new Color[max];
+    private float[][] matriz = {
+            {-1, -1, -1},
+            {-1, 9, -1},
+            {-1, -1, -1}
+    };
 
-        int x = 1, y = 1, x1, y1, ex = 5, d=0;
-        for ( x = rad; x < imagen.getAlto() - rad; x++) {
-            for (y = rad; y < imagen.getAncho() - rad; y++) {
-                 for (x1 = x - rad; x1 < x + rad; x1++){
-                     for (y1 = y - rad; y1 < y + rad; y1++){
-                         color[i++] = new Color(pixeles[y1][x1]);
-                     }
-                 }
-                 i = 0;
-                for (d = 0; d < max; d++) {
-                    a1 = a1 + color[d].getAlpha();
+
+    public void transformarBlur() {
+        int[][] pixeles = imagen.getPixeles();
+        for (int i = 0; i < imagen.getAncho() - 2; i += 3) {
+            for (int j = 0; j < imagen.getAlto() - 2; j += 3) {
+                int a11 = pixeles[i][j];
+                int r = (a11 >> 16) & 0x000000ff;
+                int g = (a11 >> 8) & 0x000000ff;
+                int b = a11 & 0x000000ff;
+
+                int a12 = pixeles[i][j + 1];
+                r = (int) (((a12 >> 16) & 0x000000ff) * (0.125));
+                g = (int) (((a12 >> 8) & 0x000000ff) * (0.125));
+                b = (int) ((a12 & 0x000000ff) * (0.125));
+                //imagen.setColor(r+g+b, i, j);
+                int a13 = pixeles[i][j + 2];
+                r = (a13 >> 16) & 0x000000ff;
+                g = (a13 >> 8) & 0x000000ff;
+                b = a13 & 0x000000ff;
+                int a21 = pixeles[i + 1][j];
+                r = ((a21 >> 16) & 0x000000ff) * 2;
+                g = ((a21 >> 8) & 0x000000ff) * 2;
+                b = (a21 & 0x000000ff) * 2;
+                int a22 = pixeles[i + 1][j + 1];
+                r = ((a22 >> 16) & 0x000000ff) * 4;
+                g = ((a22 >> 8) & 0x000000ff) * 4;
+                b = (a22 & 0x000000ff) * 4;
+                int a23 = pixeles[i + 1][j + 2];
+                r = ((a23 >> 16) & 0x000000ff) * 2;
+                g = ((a23 >> 8) & 0x000000ff) * 2;
+                b = (a23 & 0x000000ff) * 2;
+                int a31 = pixeles[i + 2][j];
+                r = (a31 >> 16) & 0x000000ff;
+                g = (a31 >> 8) & 0x000000ff;
+                b = a31 & 0x000000ff;
+
+                int a32 = pixeles[i + 2][j + 1];
+                r = ((a32 >> 16) & 0x000000ff) * 2;
+                g = ((a32 >> 8) & 0x000000ff) * 2;
+                b = (a32 & 0x000000ff) * 2;
+                int a33 = pixeles[i + 2][j + 2];
+                r = (a33 >> 16) & 0x000000ff;
+                g = (a33 >> 8) & 0x000000ff;
+                b = a33 & 0x000000ff;
+                //int promedio = (int) (((double) r + (double) g + (double) b)/9);
+                /*int promedio = (a11/16 + a12/8 + a13/16 + a21/8 + a22/4 + a23/8 + a31/16 + a32/8 + a33/16);
+                //promedio = promedio + promedio*256 + promedio + 256*256;*/
+
+                //imagen.setColor(rgb, i, j);
+                int[] vector = {a11, a12, a13, a21, a22, a23, a31, a32, a33};
+                int res = ordenar(vector);
+                imagen.setColor(res, i + 1, j + 1);
+                imagen.setColor(res-10, i, j);
+                imagen.setColor(res-10, i, j + 1);
+                imagen.setColor(res-10, i, j + 2);
+                imagen.setColor(res-10, i + 1, j);
+                imagen.setColor(res-10, i + 1, j + 1);
+                imagen.setColor(res-10, i + 1, j + 2);
+                imagen.setColor(res-10, i + 2, j);
+                imagen.setColor(res-10, i + 2, j + 1);
+                imagen.setColor(res-10, i + 2, j + 2);
+            }
+            imagen.transformada();
+        }
+    }
+
+    private int ordenar(int[] vector) {
+        int temporal;
+        for (int i = 0; i < vector.length; i++) {
+            for (int j = 1; j < (vector.length - i); j++) {
+                if (vector[j - 1] > vector[j]) {
+                    temporal = vector[j - 1];
+                    vector[j - 1] = vector[j];
+                    vector[j] = temporal;
                 }
-                a1 = a1 / (max);
-                for (d = 0; d < max; d++) {
-                    r1 = r1 + color[d].getRed();
-                }
-                r1 = r1 / (max);
-                for (d = 0; d < max; d++) {
-                    g1 = g1 + color[d].getGreen();
-                }
-                g1 = g1 / (max);
-                for (d = 0; d < max; d++) {
-                    b1 = b1 + color[d].getBlue();
-                }
-                b1 = b1 / (max);
-                int sum1 = (a1 << 24) + (r1 << 16) + (g1 << 8) + b1;
-                imagen.setColor(sum1, y, x);
             }
         }
-        imagen.transformada();
+        return vector[5];
     }
 
 }
